@@ -3,14 +3,12 @@ const async = require('async');
 const delay = 10000;
 const randomTimeoutLogs = [];
 
-const randomTimeoutLog = (n, multiplier) => {
-  return (cb) => {
-    const logAndResolveN = () => {
-      console.log(`Number ${n} was called!`);
-      cb(null, n);
-    };
-    setTimeout(logAndResolveN, Math.random() * multiplier);
+const randomTimeoutLog = (n, multiplier) => (cb) => {
+  const logAndResolveN = () => {
+    console.log(`Number ${n} was called!`);
+    cb(null, n);
   };
+  setTimeout(logAndResolveN, Math.random() * multiplier);
 };
 
 for (let i = 0; i < 10; i++) {
