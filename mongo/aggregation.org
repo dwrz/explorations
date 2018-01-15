@@ -11,7 +11,7 @@ mongoimport -d aggregation zips.json
 
 Connect to the MongoDB server:
 #+BEGIN_SRC js :tangle yes
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
 
 const dbURL = 'mongodb://localhost:27017';
 const dbName = 'aggregation';
