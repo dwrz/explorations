@@ -1,0 +1,44 @@
+* Setup MongoDB
+Run the MongoDB server:
+#+BEGIN_SRC bash :results output silent
+mongod --dbpath=./db/ &> /dev/null &
+#+END_SRC
+
+Import data:
+#+BEGIN_SRC bash :results output silent
+mongoimport -d aggregation zips.json
+#+END_SRC
+
+Connect to the MongoDB server:
+#+BEGIN_SRC js :tangle yes
+const MongoClient = require('mongodb').MongoClient;
+
+const dbURL = 'mongodb://localhost:27017';
+const dbName = 'aggregation';
+
+MongoClient.connect(dbURL, (err, client) => {
+  console.log('Connected to MongoDB.');
+  const db = client.db(dbName);
+  const collection = db.collection('zips');
+  collection.find({_id: "10044"}).toArray((err, doc) => {
+    console.log(doc);
+  });
+  client.close();
+});
+#+END_SRC
+
+* Tangle and Test
+Export JS:
+#+BEGIN_SRC elisp :results output silent
+(org-babel-tangle)
+#+END_SRC
+
+Execute JS:
+#+BEGIN_SRC bash :results value raw
+node aggregation.js
+#+END_SRC
+
+Delete:
+#+BEGIN_SRC bash
+rm aggregation.js
+#+END_SRC
