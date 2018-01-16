@@ -1,44 +1,144 @@
+* Reference
+[[https://docs.mongodb.com/manual/tutorial/aggregation-zip-code-data-set/][Aggregation with the Zip Code Data Set]]
+[[https://github.com/mongodb/node-mongodb-native][MongoDB Native nodejs Driver]]
+
 * Setup MongoDB
 Run the MongoDB server:
 #+BEGIN_SRC bash :results output silent
 mongod --dbpath=./db/ &> /dev/null &
 #+END_SRC
 
-Import data:
+Import zipcode data:
 #+BEGIN_SRC bash :results output silent
 mongoimport -d aggregation zips.json
 #+END_SRC
 
-Connect to the MongoDB server:
+Require MongoClient:
 #+BEGIN_SRC js :tangle yes
 const { MongoClient } = require('mongodb');
+#+END_SRC
 
+Setup the db variables:
+#+BEGIN_SRC js :tangle yes
 const dbURL = 'mongodb://localhost:27017';
 const dbName = 'aggregation';
+const collectionName = 'zips';
+#+END_SRC
 
-MongoClient.connect(dbURL, (err, client) => {
-  console.log('Connected to MongoDB.');
+Create the connection:
+#+BEGIN_SRC js :tangle yes
+const collection = MongoClient.connect(dbURL).then(client => new Promise((resolve) => {
+  console.log('Connected to MongoDB.\n');
   const db = client.db(dbName);
-  const collection = db.collection('zips');
-  collection.find({_id: "10044"}).toArray((err, doc) => {
-    console.log(doc);
+  const zipcodes = db.collection(collectionName);
+  resolve(zipcodes);
+}));
+#+END_SRC
+
+* Queries
+
+** Find
+This is a run of the mill find query. We search for a document that has a unique id.
+
+#+BEGIN_SRC js :tangle yes
+const query1 = () => collection.then(zipcodes => new Promise((resolve, reject) => {
+  console.log('Running find query:\n');
+  zipcodes.find({ _id: '10044' }).toArray((err, doc) => {
+    if (err) {
+      reject(err);
+    }
+    resolve(doc);
   });
-  client.close();
-});
+}))
+  .then((doc) => {
+    console.log(doc);
+    console.log('\n');
+  })
+  .catch((err) => {
+    console.error('There was an error:\n', err);
+  });
+#+END_SRC
+
+** Aggregation
+An aggregation from the mongoDB documentation.
+
+Each element in the aggregation array parameter represents a step in a pipeline.
+
+The first step is to group the zipcodes by their state, while summing their population.
+
+The next step receives a new set of documents, arranged according to the group stage.
+
+Here, we match only those documents where the population is greater than 10 million.
+
+#+BEGIN_SRC js :tangle yes
+const query2 = () => collection.then(zipcodes => new Promise((resolve, reject) => {
+  console.log('Running aggregation query:\n');
+  zipcodes.aggregate([
+    { $group: { _id: '$state', totalPop: { $sum: '$pop' } } },
+    { $match: { totalPop: { $gte: 10 * 1000 * 1000 } } },
+  ]).toArray((err, docs) => {
+    if (err) {
+      reject(err);
+    }
+    resolve(docs);
+  });
+}))
+  .then((docs) => {
+    console.log(docs);
+    console.log('\n');
+  })
+  .catch((err) => {
+    console.error('There was an error:\n', err);
+  });
+#+END_SRC
+
+* Exit
+#+BEGIN_SRC js :tangle yes
+(async () => {
+  await query1();
+  await query2();
+  process.exit();
+})();
 #+END_SRC
 
 * Tangle and Test
-Export JS:
+Export tangled JS:
 #+BEGIN_SRC elisp :results output silent
 (org-babel-tangle)
 #+END_SRC
 
 Execute JS:
-#+BEGIN_SRC bash :results value raw
+#+BEGIN_SRC bash :results value code
 node aggregation.js
 #+END_SRC
 
-Delete:
-#+BEGIN_SRC bash
+#+RESULTS:
+#+BEGIN_SRC js
+Connected to MongoDB.
+
+Running find query:
+
+[ { _id: '10044',
+    city: 'NEW YORK',
+    loc: [ -73.949136, 40.762998 ],
+    pop: 8190,
+    state: 'NY' } ]
+
+
+Running aggregation query:
+
+[ { _id: 'CA', totalPop: 29754890 },
+  { _id: 'FL', totalPop: 12686644 },
+  { _id: 'PA', totalPop: 11881643 },
+  { _id: 'NY', totalPop: 17990402 },
+  { _id: 'OH', totalPop: 10846517 },
+  { _id: 'IL', totalPop: 11427576 },
+  { _id: 'TX', totalPop: 16984601 } ]
+
+
+#+END_SRC
+
+Delete tangled JS:
+#+BEGIN_SRC bash :results output silent
 rm aggregation.js
 #+END_SRC
