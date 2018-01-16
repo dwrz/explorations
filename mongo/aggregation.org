@@ -1,6 +1,6 @@
 * Reference
-[[https://docs.mongodb.com/manual/tutorial/aggregation-zip-code-data-set/][Aggregation with the Zip Code Data Set]]
-[[https://github.com/mongodb/node-mongodb-native][MongoDB Native nodejs Driver]]
++ [[https://docs.mongodb.com/manual/tutorial/aggregation-zip-code-data-set/][Aggregation with the Zip Code Data Set]]
++ [[https://github.com/mongodb/node-mongodb-native][MongoDB Native nodejs Driver]]
 
 * Setup MongoDB
 Run the MongoDB server:
@@ -66,7 +66,7 @@ Each element in the aggregation array parameter represents a step in a pipeline.
 
 The first step is to group the zipcodes by their state, while summing their population.
 
-The next step receives a new set of documents, arranged according to the group stage.
+The next step receives a new set of documents, arranged according to the grouping stage.
 
 Here, we match only those documents where the population is greater than 10 million.
 
@@ -92,7 +92,7 @@ const query2 = () => collection.then(zipcodes => new Promise((resolve, reject) =
   });
 #+END_SRC
 
-* Exit
+* Execute and Exit
 #+BEGIN_SRC js :tangle yes
 (async () => {
   await query1();
