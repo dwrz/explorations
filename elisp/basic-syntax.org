@@ -1,3 +1,14 @@
+#+BEGIN_SRC emacs-lisp :tangle yes
+;;; basic-syntax.org --- Emacs Lisp Syntax
+
+;;; Commentary:
+;; Explorations of basic Emacs Lisp syntax.
+
+;;; Code:
+#+END_SRC
+
+* Variables and Functions
+
 /setq/ -- define variables:
 #+BEGIN_SRC emacs-lisp :tangle yes
 (setq name "dwrz")
