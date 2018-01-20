@@ -20,7 +20,7 @@
 
 /defun/ -- define functions:
 #+BEGIN_SRC emacs-lisp :tangle yes
-(defun say-name () (insert name))
+(defun say-name () (message name))
 (defun add-one (n) (+ 1 n)) ; Takes a parameter.
 #+END_SRC
 
