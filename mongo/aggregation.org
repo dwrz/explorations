@@ -38,7 +38,7 @@ const collection = MongoClient.connect(dbURL).then(client => new Promise((resolv
 * Queries
 
 ** Find
-This is a run of the mill find query. We search for a document that has a unique id.
+This is a run-of-the-mill find query. We search for a document that has a unique id.
 
 #+BEGIN_SRC js :tangle yes
 const query1 = () => collection.then(zipcodes => new Promise((resolve, reject) => {
