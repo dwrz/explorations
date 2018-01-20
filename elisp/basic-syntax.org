@@ -1,0 +1,44 @@
+/setq/ -- define variables:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq name "dwrz")
+(setq zero 0)
+(setq not-zero 1)
+(setq is-true t)
+(setq is-false nil)
+#+END_SRC
+
+/defun/ -- define functions:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun say-name () (insert name))
+(defun add-one (n) (+ 1 n)) ; Takes a parameter.
+#+END_SRC
+
+Execute functions:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(say-name) ; dwrz
+(add-one 1) ; 2
+(add-one zero) ; 1
+(add-one zero) ; Still 1.
+#+END_SRC
+
+/progn/ -- executes expressions and returns the last value:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(progn
+  (setq number 0) ; Local variable
+  (+ 1 number) ; 1
+  (+ 1 number) ; Still 1.
+  (- number 1) ; -1
+  ) ; Returns - 1
+#+END_SRC
+
+/let/ -- used to define local variables.
+Will execute multiple expressions like progn.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(not-zero) ; 1
+(let ((one 1)
+      (two 2)
+      (not-zero 5) ; Local binding has different value.
+      )
+  (+ one two not-zero)
+); 8 -- local value was used.
+#+END_SRC
