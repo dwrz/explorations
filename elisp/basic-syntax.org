@@ -60,3 +60,79 @@ Will execute multiple expressions like progn.
   (+ one two not-zero)
 ); 8 -- local value was used.
 #+END_SRC
+
+/format/ built-in function to format strings.
+Utilizes /%-sequences/ for substitution.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(format "Ciao %s!" "micina") ; "Ciao micina!"
+#+END_SRC
+
+/read-from-minibuffer/ returns an inputted string:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(format "Ciao %s!" (read-from-minibuffer "Chi è? "))
+#+END_SRC
+
+* Data Structures
+
+** Lists
+/lists/ seem to form the basis of Lisp, playing a role similar to the /Object/ in JavaScript.
+
+"Everything in Lisp is a list", "everything in JavaScript is an Object" -- technically neither are true, but there's a reason these phrases exist.[fn:1][fn:2]
+
+By default, the first item in a list identifies a function.
+To use a list as data, a single quote must be prepended:
+#+BEGIN_SRC emacs-lisp :tangle yes
+("apple" "banana" "carrot") ; Invalid function: "apple"
+'("apple" "banana" "carrot") ; ("apple" "banana" "carrot")
+#+END_SRC
+
+This works with functions, too:
+#+BEGIN_SRC emacs-lisp :tangle yes
+;; Not executed:
+'(defun say-something () (message "something")) ; (defun say-something nil (insert "something"))
+#+END_SRC
+
+A variety of built-in functions are used to operate on lists:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq string-list '("thread" "twine" "yarn"))
+(car string-list) ; "thread"
+(cdr string-list) ; ("twine" "yarn")
+#+END_SRC
+
+/car/ and /cdr[fn:3]/ retrieve items from a list, but do not modify the list.
+
+Other functions, like /push/, modify the list:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(push "theory" string-list) ; ("theory" "thread" "twine" "yarn")
+#+END_SRC
+
+/mapcar/ calls a function and passes each item in the list to it:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun say-my-favorite-string (favorite)
+  (message
+   (format "My favorite string is %s" favorite)))
+
+(mapcar 'say-my-favorite-string string-list) ; "My favorite string is theory", etc.
+#+END_SRC
+
+** cons
+/cons[fn:4]/ .
+
+* Control Flow
+
+** if/then
+
+** while
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+; (provide 'basic-syntax)
+
+;;; basic-syntax.org ends here
+#+END_SRC
+
+* Footnotes
+
+[fn:1] [[http://www.gigamonkeys.com/book/they-called-it-lisp-for-a-reason-list-processing.html][They Called It LISP for a Reason: List Processing]], from [[http://www.gigamonkeys.com/book/][Practical Common Lisp]], Peter Seibel.
+[fn:2] [[https://github.com/getify/You-Dont-Know-JS/blob/master/this%2520%2526%2520object%2520prototypes/ch3.md][You Don't Know JS: /this/ & Object Prototypes]], Kyle Simpson.
+[fn:3] [[https://en.wikipedia.org/wiki/CAR_and_CDR][CAR and CDR]], Wikipedia.
+[fn:4] [[https://en.wikipedia.org/wiki/Cons][cons]], Wikipedia: "/cons/ *cons*-tructs memory objects which hold two values or pointers to values."
