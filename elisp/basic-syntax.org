@@ -133,6 +133,9 @@ Other functions, like /push/, modify the list:
 * Footnotes
 
 [fn:1] [[http://www.gigamonkeys.com/book/they-called-it-lisp-for-a-reason-list-processing.html][They Called It LISP for a Reason: List Processing]], from [[http://www.gigamonkeys.com/book/][Practical Common Lisp]], Peter Seibel.
+
 [fn:2] [[https://github.com/getify/You-Dont-Know-JS/blob/master/this%2520%2526%2520object%2520prototypes/ch3.md][You Don't Know JS: /this/ & Object Prototypes]], Kyle Simpson.
+
 [fn:3] [[https://en.wikipedia.org/wiki/CAR_and_CDR][CAR and CDR]], Wikipedia.
+
 [fn:4] [[https://en.wikipedia.org/wiki/Cons][cons]], Wikipedia: "/cons/ *cons*-tructs memory objects which hold two values or pointers to values."
