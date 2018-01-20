@@ -118,7 +118,7 @@ Other functions, like /push/, modify the list:
 ** cons
 /cons[fn:4]/ .
 
-* Control Flow
+* Flow Control
 
 ** if/then
 
