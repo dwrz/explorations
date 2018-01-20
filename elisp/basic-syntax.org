@@ -75,7 +75,7 @@ Utilizes /%-sequences/ for substitution.
 * Data Structures
 
 ** Lists
-/lists/ seem to form the basis of Lisp, playing a role similar to the /Object/ in JavaScript.
+/Lists/ seem to form the basis of Lisp, playing a role similar to the /Object/ in JavaScript.
 
 "Everything in Lisp is a list", "everything in JavaScript is an Object" -- technically neither are true, but there's a reason these phrases exist.[fn:1][fn:2]
 
