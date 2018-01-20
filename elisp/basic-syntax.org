@@ -32,6 +32,13 @@ Execute functions:
 (add-one zero) ; Still 1.
 #+END_SRC
 
+Variables can't be executed:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(name) ; Symbol’s function definition is void: name
+#+END_SRC
+
+** Built-In Functions
+
 /progn/ -- executes expressions and returns the last value:
 #+BEGIN_SRC emacs-lisp :tangle yes
 (progn
