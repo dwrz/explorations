@@ -105,6 +105,21 @@ substring returns a string extract, as delimited by start and end indexes:
 (format "Ciao %s!" (read-from-minibuffer "Chi è? "))
 #+END_SRC
 
+** Lists
+/listp/ returns t/nil depending on whether its argument is a list:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(listp 1) ; nil
+(listp '(1 2)) ; t
+(listp (1 2)); Invalid function 1
+(listp (listp ())) ; nil -- (listp ()) return t, which is not a list
+#+END_SRC
+
+#+BEGIN_QUOTE
+The ‘p’ stands for “predicate”.  In the jargon used by the early Lisp researchers, a predicate refers to a function [used] to determine whether some property is true or false.
+
+/An Introduction to Programming in Emacs Lisp/, Robert J. Chassel.
+#+END_QUOTE
+
 ** Special Forms
 /progn/ -- executes expressions and returns the last value:
 #+BEGIN_SRC emacs-lisp :tangle yes
