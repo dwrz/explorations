@@ -39,6 +39,23 @@ Variables can't be executed:
 
 ** Built-In Functions
 
+*** Strings
+/concat/ concatenates strings:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(concat "Hello " "World" "!") ; "Hello World!"
+#+END_SRC
+
+substring returns a string extract, as delimited by start and end indexes:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(substring "Emacs Lisp" 6 10) ; "Lisp"
+(substring "0123" 0 5) ; Args out of range: "0123", 0, 5
+#+END_SRC
+
+/format/ formats strings, utilizes /%-sequences/ for substitution:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(format "Ciao %s!" "micina") ; "Ciao micina!"
+#+END_SRC
+
 /progn/ -- executes expressions and returns the last value:
 #+BEGIN_SRC emacs-lisp :tangle yes
 (progn
@@ -61,11 +78,7 @@ Will execute multiple expressions like /progn/.
 ); 8 -- local value was used.
 #+END_SRC
 
-/format/ built-in function to format strings.
-Utilizes /%-sequences/ for substitution.
-#+BEGIN_SRC emacs-lisp :tangle yes
-(format "Ciao %s!" "micina") ; "Ciao micina!"
-#+END_SRC
+
 
 /read-from-minibuffer/ returns an inputted string:
 #+BEGIN_SRC emacs-lisp :tangle yes
