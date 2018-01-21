@@ -192,7 +192,14 @@ Other functions, like /push/, modify the list:
 * Flow Control
 
 ** Order of Evaluation
-
+Inner lists are evaluated before outer ones:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(concat (number-to-string 3) ", "
+        (number-to-string (- 3 1)) ", "
+        (number-to-string (- (- 3 1) 1)) ", "
+        (concat "liftoff" "!"))
+;; "3, 2, 1, liftoff!"
+#+END_SRC
 
 ** if/then
 
