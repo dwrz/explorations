@@ -100,6 +100,12 @@ substring returns a string extract, as delimited by start and end indexes:
 (format "Ciao %s!" "micina") ; "Ciao micina!"
 #+END_SRC
 
+/read-from-minibuffer/ returns an inputted string:
+#+BEGIN_SRC emacs-lisp :tangle yes
+(format "Ciao %s!" (read-from-minibuffer "Chi è? "))
+#+END_SRC
+
+
 /progn/ -- executes expressions and returns the last value:
 #+BEGIN_SRC emacs-lisp :tangle yes
 (progn
@@ -120,13 +126,6 @@ Will execute multiple expressions like /progn/.
       )
   (+ one two not-zero)
 ); 8 -- local value was used.
-#+END_SRC
-
-
-
-/read-from-minibuffer/ returns an inputted string:
-#+BEGIN_SRC emacs-lisp :tangle yes
-(format "Ciao %s!" (read-from-minibuffer "Chi è? "))
 #+END_SRC
 
 * Data Structures
