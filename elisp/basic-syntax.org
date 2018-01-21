@@ -50,7 +50,7 @@ Variables can't be executed:
 #+END_SRC
 
 /let/ -- used to define local variables.
-Will execute multiple expressions like progn.
+Will execute multiple expressions like /progn/.
 #+BEGIN_SRC emacs-lisp :tangle yes
 (not-zero) ; 1
 (let ((one 1)
