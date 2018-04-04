@@ -23,4 +23,5 @@ executeConcurrently(Α, Ω)
   .then(arr => console.log(JSON.stringify(arr)))
   .then(() => {
     process.exit(0);
-  });
+  })
+  .catch(e => console.error(e));
