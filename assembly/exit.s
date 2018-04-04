@@ -1,5 +1,6 @@
 #PURPOSE:   Simple program that exits and returns a
 #           status code back to the Linux kernel
+#
 
 #INPUT:     none
 #
@@ -29,7 +30,7 @@ movl $1, %eax       # this is the linux kernel command
                     # mode, looking up a number in
                     # address 1
 
-movl $2, %ebx       # this is the status number we will
+movl $0, %ebx       # this is the status number we will
                     # return to the OS
 
 int $0x80           # this wakes up the kernel to run the
