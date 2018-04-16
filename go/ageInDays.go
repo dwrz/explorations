@@ -4,8 +4,11 @@
 // and if by reason of strength they be fourscore years,
 // yet is their strength labour and sorrow;
 // for it is soon cut off, and we fly away.
+// . . .
+// Teach us to number our days,
+// that we may gain a heart of wisdom.
+//
 // Psalm 90:10
-
 package main
 
 import (
