@@ -17,3 +17,7 @@ func main() {
 	fmt.Printf("YOU ARE ~%d DAYS OLD.", elapsedDays)
 	return
 }
+
+func calcElapsedDays(date time.Time) int {
+	return int(math.Round(time.Since(date).Hours() / 24))
+}
