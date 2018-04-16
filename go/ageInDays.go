@@ -13,8 +13,7 @@ func main() {
 		fmt.Println("UNABLE TO PARSE INPUTTED DATE.")
 		os.Exit(1)
 	}
-	elapsedDays := int(math.Round(time.Since(dob).Hours() / 24))
-	fmt.Printf("YOU ARE ~%d DAYS OLD.", elapsedDays)
+	fmt.Printf("YOU ARE ~%d DAYS OLD.", calcElapsedDays(dob))
 	return
 }
 
