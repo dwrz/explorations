@@ -26,8 +26,16 @@ func main() {
 		fmt.Println("PLEASE ENTER A DATE IN YYYYMMDD FORMAT.")
 		fmt.Printf("EG: %s FOR TODAY'S DATE.", time.Now().Format("20060102"))
 		os.Exit(1)
+	} else if os.Args[1] == "w" {
+		http.HandleFunc("/", server)
+		log.Fatal(http.ListenAndServe(":8080", nil))
 	}
-	calcAgeInDays()
+	age, err := calcAgeInDays(os.Args[1])
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(2)
+	}
+	fmt.Printf("YOU ARE ~%d DAYS OLD.", age)
 }
 
 func calcAgeInDays(date string) (int, error) {
