@@ -41,3 +41,14 @@ func calcAgeInDays(date string) (int, error) {
 func calcElapsedDays(date time.Time) int {
 	return int(math.Round(time.Since(date).Hours() / 24))
 }
+
+func server(w http.ResponseWriter, r *http.Request) {
+	age, err := calcAgeInDays(r.URL.Path[1:])
+	if err != nil {
+		fmt.Println(err)
+		fmt.Fprintf(w, "UNABLE TO PARSE THAT DATE.")
+		return
+	}
+	fmt.Fprintf(w, "YOU ARE ~%d DAYS OLD.", age)
+	return
+}
