@@ -30,14 +30,12 @@ func main() {
 	calcAgeInDays()
 }
 
-func calcAgeInDays () {
-	dob, err := time.Parse("20060102", os.Args[1])
+func calcAgeInDays(date string) (int, error) {
+	dob, err := time.Parse("20060102", date)
 	if err != nil {
-		fmt.Println("UNABLE TO PARSE INPUTTED DATE.")
-		os.Exit(2)
+		return 0, errors.New("UNABLE TO PARSE INPUTTED DATE.")
 	}
-	fmt.Printf("YOU ARE ~%d DAYS OLD.", calcElapsedDays(dob))
-	return
+	return calcElapsedDays(dob), nil
 }
 
 func calcElapsedDays(date time.Time) int {
