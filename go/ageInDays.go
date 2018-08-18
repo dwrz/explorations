@@ -8,7 +8,7 @@
 // Teach us to number our days,
 // that we may gain a heart of wisdom.
 //
-// Psalm 90:10
+// Psalm 90:10-12
 package main
 
 import (
