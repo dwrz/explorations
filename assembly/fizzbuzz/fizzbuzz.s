@@ -81,7 +81,7 @@ _print_fizz:
         mov $4, %rax    # System call number for write.
         mov $1, %rbx    # stdout.
         mov $fizz, %rcx # Address of the buffer.
-        mov $5, %rdx    # Number of bytes to write.
+        mov $4, %rdx    # Number of bytes to write.
         int $0x80       # Call the kernel.
 
         mov %rbp, %rsp
@@ -95,7 +95,7 @@ _print_buzz:
         mov $4, %rax    # System call number for write.
         mov $1, %rbx    # stdout.
         mov $buzz, %rcx # Address of the buffer.
-        mov $5, %rdx    # Number of bytes to write.
+        mov $4, %rdx    # Number of bytes to write.
         int $0x80       # Call the kernel.
 
         mov %rbp, %rsp
@@ -109,7 +109,7 @@ _print_fizzbuzz:
         mov $4, %rax    # System call number for write.
         mov $1, %rbx    # stdout.
         mov $fizzbuzz, %rcx # Address of the buffer.
-        mov $5, %rdx    # Number of bytes to write.
+        mov $8, %rdx    # Number of bytes to write.
         int $0x80       # Call the kernel.
 
         mov %rbp, %rsp
