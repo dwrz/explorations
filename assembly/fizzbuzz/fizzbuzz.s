@@ -1,10 +1,14 @@
-# PURPOSE: Print "fizz" if a number is divisible by three.
+# PURPOSE:
+        # Loop from numbers 1 to 100.
+        # Print "fizz" if a number is divisible by 3.
+        # Print "buzz" if a number is divisible by 5.
+        # Print "fizzbuzz" if a number is divisible by 3 and 5.
+        # Print the number in all other cases.
 # INPUT: None.
-# OUTPUT:    Prints a string to stdout.
-#           Returns a status code of 0.
+# OUTPUT:
+        # Print newline separated strings to stdout.
+        # Return a status code of 0.
 # VARIABLES:
-#           %rax holds the system call number
-#           %rbx holds the return status
 .section .data
 fizz:
         .ascii "fizz\n"
@@ -27,23 +31,23 @@ print_case:
 
 _test_fizz:
         mov %rcx, %rax # Use the loop counter as the dividend.
-        movq $3, %rbx # Use 3 as the divisor for "fizz" test.
+        movq $3, %rbx  # Use 3 as the divisor for "fizz" test.
         cdq # Convert double-word to quad-word, necessary for 32 and 64-bit division.
         div %rbx
-        cmp $0, %rdx # Was the remainder 0?
-        jne return_test_fizz
-        add $1, print_case # Store the print case.
+        cmp $0, %rdx         # Was the remainder 0?
+        jne return_test_fizz # If not, return early.
+        add $1, print_case   # Otherwise, increment the print case.
 return_test_fizz:
         ret
 
 _test_buzz:
         mov %rcx, %rax # Use the loop counter as the dividend.
-        movq $5, %rbx # Use 3 as the divisor for "buzz" test.
+        movq $5, %rbx  # Use 5 as the divisor for "buzz" test.
         cdq # Convert double-word to quad-word, necessary for 32 and 64-bit division.
         div %rbx
-        cmp $0, %rdx # Was the remainder 0?
-        jne return_test_buzz
-        add $2, print_case # Store the print case.
+        cmp $0, %rdx         # Was the remainder 0?
+        jne return_test_buzz # If not, return early.
+        add $2, print_case   # Otherwise, increment the print case.
 return_test_buzz:
         ret
 
@@ -61,7 +65,6 @@ _print:
         push %rbp
         mov %rsp, %rbp
 
-        # Print the buffer.
         mov $4, %rax             # System call number for write.
         mov $1, %rbx             # stdout.
 
@@ -113,11 +116,17 @@ _start:
         mov $1, %rcx
 
 loop:
-        # Determine the print case.
+        # Determine the print case (which was initialized as 0).
+        # Both calls have a side-effect on the print_case buffer.
+        # If the counter is divisible by 3, increment print_case by 1.
+        # If divisible by 5, increment print_case by 2.
+        # A number divisible by 3 and 5 thus results in a print_case of 3.
+        # A number that isn't divisible by either leaves print_case at 0.
         call _test_fizz
         call _test_buzz
 
-        # Save the loop counter on the stack.
+        # Save the loop counter on the stack,
+        # since the call to print will modify %rcx.
         push %rcx
 
         call _print
@@ -127,7 +136,7 @@ loop:
         inc %rcx
 
         # Reset the print case.
-        movl $0, print_case
+        movb $0, print_case
 
         # Have we iterated 15 times? If not, loop again.
         cmp $16, %rcx
