@@ -57,60 +57,47 @@ _itoa:
         pop %rbp
         ret
 
-_print_counter:
+_print:
         push %rbp
         mov %rsp, %rbp
-        mov %rcx, %rax           # Store the loop counter in rax.
-        call _itoa               # Convert the counter to ascii, store in buffer.
 
         # Print the buffer.
         mov $4, %rax             # System call number for write.
         mov $1, %rbx             # stdout.
-        mov $number_string, %rcx # Address of the buffer.
-        mov $2, %rdx             # Number of bytes to write.
-        int $0x80                # Call the kernel.
 
-        mov %rbp, %rsp
-        pop %rbp
-        ret
+        # Switch on the print_case:
+        cmp $0, print_case
+        je print_counter
+        cmp $1, print_case
+        je print_fizz
+        cmp $2, print_case
+        je print_buzz
+        cmp $3, print_case
+        je print_fizzbuzz
 
-_print_fizz:
-        push %rbp
-        mov %rsp, %rbp
-
-        mov $4, %rax    # System call number for write.
-        mov $1, %rbx    # stdout.
-        mov $fizz, %rcx # Address of the buffer.
-        mov $4, %rdx    # Number of bytes to write.
-        int $0x80       # Call the kernel.
-
-        mov %rbp, %rsp
-        pop %rbp
-        ret
-
-_print_buzz:
-        push %rbp
-        mov %rsp, %rbp
-
-        mov $4, %rax    # System call number for write.
-        mov $1, %rbx    # stdout.
-        mov $buzz, %rcx # Address of the buffer.
-        mov $4, %rdx    # Number of bytes to write.
-        int $0x80       # Call the kernel.
-
-        mov %rbp, %rsp
-        pop %rbp
-        ret
-
-_print_fizzbuzz:
-        push %rbp
-        mov %rsp, %rbp
-
-        mov $4, %rax    # System call number for write.
-        mov $1, %rbx    # stdout.
-        mov $fizzbuzz, %rcx # Address of the buffer.
-        mov $8, %rdx    # Number of bytes to write.
-        int $0x80       # Call the kernel.
+        # Set %rcx to hold the address of the buffer.
+        # Set %rdx to hold the number of bytes to write.
+print_counter:
+        mov %rcx, %rax           # Store the loop counter in rax.
+        call _itoa               # Convert the counter to ascii, store in buffer.
+        mov $4, %rax             # Reset rax to hold the system call number for write.
+        mov $number_string, %rcx
+        mov $2, %rdx
+        jmp print_and_return
+print_fizz:
+        mov $fizz, %rcx
+        mov $5, %rdx
+        jmp print_and_return
+print_buzz:
+        mov $buzz, %rcx
+        mov $5, %rdx
+        jmp print_and_return
+print_fizzbuzz:
+        mov $fizzbuzz, %rcx
+        mov $8, %rdx
+        jmp print_and_return
+print_and_return:
+        int $0x80 # Call the kernel.
 
         mov %rbp, %rsp
         pop %rbp
@@ -133,39 +120,17 @@ loop:
         # Save the loop counter on the stack.
         push %rcx
 
-        # If the print case is 0, print the counter.
-        cmp $0, print_case
-        je print_counter
-        # If the print case is 1, print fizz.
-        cmp $1, print_case
-        je print_fizz
-        # If the print case is 2, print buzz.
-        cmp $2, print_case
-        je print_buzz
-        # If the print case is 3, print fizzbuzz.
-        cmp $3, print_case
-        je print_fizzbuzz
+        call _print
 
-print_counter:
-        call _print_counter
-        jmp continue
-print_fizz:
-        call _print_fizz
-        jmp continue
-print_buzz:
-        call _print_buzz
-        jmp continue
-print_fizzbuzz:
-        call _print_fizzbuzz
-        jmp continue
-continue:
         # Restore the loop counter, then increment it.
         pop %rcx
         inc %rcx
+
         # Reset the print case.
         movl $0, print_case
-        # Have we iterated 5 times? If not, loop again.
-        cmp $6, %rcx
+
+        # Have we iterated 15 times? If not, loop again.
+        cmp $16, %rcx
         jl loop
 
 call _exit_normal
