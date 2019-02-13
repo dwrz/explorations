@@ -51,12 +51,38 @@ _test_buzz:
 return_test_buzz:
         ret
 
-_itoa:
+_itoa: # Expects an integer at %rax.
         push %rbp
         mov %rsp, %rbp
-        add $48, %rax
-        mov %rax, number_string
-        movl $10, number_string+1
+
+        # We use %rcx to keep track of how many digits we have processed.
+        # We need this to know when to stop popping off the stack.
+        mov $0, %rcx
+
+        # We divide by ten, then use the remainder to get the digit.
+        movq $10, %rbx
+        cdq # Convert double-word to quad-word, necessary for 32 and 64-bit division.
+
+conversion_loop:
+        inc %rcx
+        mov $0, %rdx # Reset rdx.
+        div %rbx
+        add $48, %rdx
+        push %rdx
+        cmp $0, %rax
+        jne conversion_loop
+
+        lea number_string, %rdx
+
+save_to_buffer_loop:
+        pop %rax
+        movb %al, (%rdx)
+        dec %rcx
+        inc %rdx
+        cmp $0, %rcx
+        jne save_to_buffer_loop
+
+        movb $10, number_string + 3
         mov %rbp, %rsp
         pop %rbp
         ret
