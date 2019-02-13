@@ -16,8 +16,8 @@ buzz:
         .ascii "buzz\n"
 fizzbuzz:
         .ascii "fizzbuzz\n"
-number_string:
-        .zero 4
+number_string: # Used to store the ascii representation of a number.
+        .zero 5
 print_case:
         # print_case tracks what should be printed for the current number.
         # 0: print the counter.
