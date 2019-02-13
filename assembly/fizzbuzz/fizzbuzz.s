@@ -125,7 +125,7 @@ print_buzz:
         jmp print_and_return
 print_fizzbuzz:
         mov $fizzbuzz, %rcx
-        mov $8, %rdx
+        mov $9, %rdx
         jmp print_and_return
 print_and_return:
         int $0x80 # Call the kernel.
