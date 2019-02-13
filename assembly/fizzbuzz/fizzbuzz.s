@@ -109,9 +109,11 @@ _print:
 print_counter:
         mov %rcx, %rax           # Store the loop counter in rax.
         call _itoa               # Convert the counter to ascii, store in buffer.
+
+        mov $1, %rbx             # stdout.
         mov $4, %rax             # Reset rax to hold the system call number for write.
         mov $number_string, %rcx
-        mov $2, %rdx
+        mov $5, %rdx
         jmp print_and_return
 print_fizz:
         mov $fizz, %rcx
