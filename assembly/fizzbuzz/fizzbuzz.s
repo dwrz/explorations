@@ -166,8 +166,8 @@ loop:
         # Reset the print case.
         movb $0, print_case
 
-        # Have we iterated 15 times? If not, loop again.
-        cmp $16, %rcx
+        # Have we iterated enough times? If not, loop again.
+        cmp $101, %rcx
         jl loop
 
 call _exit_normal
