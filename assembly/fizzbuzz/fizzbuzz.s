@@ -49,10 +49,10 @@ return_print_case:
         pop %rbp
         ret
 
-_itoa: # Expects an integer at %rax.
+_itoa: # Expects an integer at 16(%rsp).
         push %rbp
         mov %rsp, %rbp
-
+        mov 16(%rsp), %rax # move integer to convert to %rax.
         # We use %rcx to keep track of how many digits we have processed.
         # We need this to know when to stop popping off the stack.
         mov $0, %rcx
