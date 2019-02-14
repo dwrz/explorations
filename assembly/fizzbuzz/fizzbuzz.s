@@ -17,7 +17,7 @@ buzz:
 fizzbuzz:
         .ascii "fizzbuzz\n"
 number_string: # Used to store the ascii representation of a number.
-        .zero 5
+        .zero 4
 
 .section .text
         .globl _start
@@ -113,7 +113,7 @@ print_counter:
         mov $1, %rbx             # stdout.
         mov $4, %rax             # Reset rax to hold the system call number for write.
         mov $number_string, %rcx
-        mov $5, %rdx
+        mov $4, %rdx
         jmp print_and_return
 print_fizz:
         mov $fizz, %rcx
