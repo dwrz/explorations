@@ -18,13 +18,6 @@ fizzbuzz:
         .ascii "fizzbuzz\n"
 number_string: # Used to store the ascii representation of a number.
         .zero 5
-print_case:
-        # print_case tracks what should be printed for the current number.
-        # 0: print the counter.
-        # 1: print "fizz".
-        # 2: print "buzz".
-        # 3: print "fizzbuzz".
-        .zero 1
 
 .section .text
         .globl _start
@@ -95,24 +88,26 @@ save_to_buffer_loop:
 _print:
         push %rbp
         mov %rsp, %rbp
+        # 16(%rsp) the print case.
+        # 24(%rsp) the counter.
 
         mov $4, %rax             # System call number for write.
         mov $1, %rbx             # stdout.
 
         # Switch on the print_case:
-        cmp $0, print_case
+        cmp $0, 16(%rsp)
         je print_counter
-        cmp $1, print_case
+        cmp $1, 16(%rsp)
         je print_fizz
-        cmp $2, print_case
+        cmp $2, 16(%rsp)
         je print_buzz
-        cmp $3, print_case
+        cmp $3, 16(%rsp)
         je print_fizzbuzz
 
         # Set %rcx to hold the address of the buffer.
         # Set %rdx to hold the number of bytes to write.
 print_counter:
-        mov %rcx, %rax           # Store the loop counter in rax.
+        push 24(%rsp)
         call _itoa               # Convert the counter to ascii, store in buffer.
 
         mov $1, %rbx             # stdout.
@@ -134,7 +129,6 @@ print_fizzbuzz:
         jmp print_and_return
 print_and_return:
         int $0x80 # Call the kernel.
-
         mov %rbp, %rsp
         pop %rbp
         ret
@@ -157,15 +151,13 @@ loop:
         # A number that isn't divisible by either leaves print_case at 0.
         push %rcx
         call _test_fizzbuzz
-        mov %rax, print_case
+        push %rax
         call _print
+        pop %rax
 
         # Restore the loop counter, then increment it.
         pop %rcx
         inc %rcx
-
-        # Reset the print case.
-        movb $0, print_case
 
         # Have we iterated enough times? If not, loop again.
         cmp $101, %rcx
