@@ -29,26 +29,31 @@ print_case:
 .section .text
         .globl _start
 
-_test_fizz:
-        mov %rcx, %rax # Use the loop counter as the dividend.
+_test_fizzbuzz:
+        push %rbp
+        mov %rsp, %rbp
+        sub $8, %rsp # Set aside space on the stack to keep track of print_case.
+        movq $0, 8(%rsp)
+test_fizz:
+        mov 24(%rsp), %rax # Retrieve the loop counter argument, use as the dividend.
         movq $3, %rbx  # Use 3 as the divisor for "fizz" test.
         cdq # Convert double-word to quad-word, necessary for 32 and 64-bit division.
         div %rbx
         cmp $0, %rdx         # Was the remainder 0?
-        jne return_test_fizz # If not, return early.
-        add $1, print_case   # Otherwise, increment the print case.
-return_test_fizz:
-        ret
-
-_test_buzz:
-        mov %rcx, %rax # Use the loop counter as the dividend.
+        jne test_buzz
+        add $1, 8(%rsp)   # Otherwise, increment the print case.
+test_buzz:
+        mov 24(%rsp), %rax # Retrieve the loop counter argument, use as the dividend.
         movq $5, %rbx  # Use 5 as the divisor for "buzz" test.
         cdq # Convert double-word to quad-word, necessary for 32 and 64-bit division.
         div %rbx
         cmp $0, %rdx         # Was the remainder 0?
-        jne return_test_buzz # If not, return early.
-        add $2, print_case   # Otherwise, increment the print case.
-return_test_buzz:
+        jne return_print_case # If not, return early.
+        add $2, 8(%rsp)   # Otherwise, increment the print case.
+return_print_case:
+        mov 8(%rsp), %rax
+        mov %rbp, %rsp
+        pop %rbp
         ret
 
 _itoa: # Expects an integer at %rax.
@@ -150,13 +155,9 @@ loop:
         # If divisible by 5, increment print_case by 2.
         # A number divisible by 3 and 5 thus results in a print_case of 3.
         # A number that isn't divisible by either leaves print_case at 0.
-        call _test_fizz
-        call _test_buzz
-
-        # Save the loop counter on the stack,
-        # since the call to print will modify %rcx.
         push %rcx
-
+        call _test_fizzbuzz
+        mov %rax, print_case
         call _print
 
         # Restore the loop counter, then increment it.
