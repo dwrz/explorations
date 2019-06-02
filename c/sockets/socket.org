@@ -1,0 +1,36 @@
+* File Descriptors
+
+** write()
+~ssize_t write(int fd, const void *buf, size_t count);~
+
+write()  writes  up  to  count bytes from the buffer starting at buf to the file referred to by the file descriptor fd.
+
+** read()
+~ssize_t read(int fd, void *buf, size_t count);~
+
+read()  attempts  to read up to count bytes from file descriptor fd into the buffer starting at buf.
+
+* Echo with stdin and stdout
+#+begin_src C
+#include <string.h>
+#include <unistd.h>
+
+const int MAX_INPUT_LENGTH = 100;
+
+int main(void) {
+	char str[MAX_INPUT_LENGTH];
+
+	write(1, "Type something:\n", 18);
+	read(0, str, MAX_INPUT_LENGTH);
+
+	int inputLength = strlen(str);
+	if (inputLength > MAX_INPUT_LENGTH) inputLength = MAX_INPUT_LENGTH;
+
+	write(1,"\nYou entered:\n", 16);
+	write(1, str, inputLength);
+}
+#+end_src
+
+* Echo Server
+
+* Echo Client
